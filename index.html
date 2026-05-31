@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Landespolizei Falkenheim — Ausbildungsportal</title>
+  <link rel="stylesheet" href="style.css" />
+  <!-- Supabase JS (v2) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+</head>
+<body>
+  <header class="topbar" role="banner">
+    <div class="brand">
+      <img src="Pol_Logo.png" alt="Landespolizei Falkenheim Logo" id="logo" />
+      <div>
+        <h1>Landespolizei Falkenheim</h1>
+        <p class="subtitle">Ausbildungsportal — Übersicht & Prüfungsfreigaben</p>
+      </div>
+    </div>
+
+    <nav class="nav" role="navigation" aria-label="Hauptnavigation">
+      <button id="view-azubi" class="nav-btn active" aria-pressed="true">Azubi</button>
+      <button id="view-ausbilder" class="nav-btn" aria-pressed="false">Ausbilder</button>
+      <button id="view-kommission" class="nav-btn" aria-pressed="false">Prüfungskommission</button>
+    </nav>
+  </header>
+
+  <main class="container" role="main">
+    <!-- AZUBI (Nur Ansicht) -->
+    <section id="panel-azubi" class="panel" aria-labelledby="azubi-heading">
+      <h2 id="azubi-heading">Azubi Bereich — Übersicht</h2>
+
+      <div class="card">
+        <h3>Aktuelle Module</h3>
+        <ul id="links-list" class="links-list" aria-live="polite"></ul>
+      </div>
+
+      <div class="card">
+        <h3>Bevorstehende Termine</h3>
+        <ul id="events-list" class="events-list" aria-live="polite"></ul>
+      </div>
+
+      <div class="card exam-card" id="exam-card">
+        <h3>Prüfungsstatus</h3>
+        <div id="exam-status" class="exam-status">Keine Prüfung aktiv</div>
+        <div id="exam-controls" class="exam-controls hidden" aria-hidden="true">
+          <a id="exam-form-link" class="btn primary" target="_blank" rel="noopener">Zur Prüfungsform</a>
+          <div id="exam-timer" class="timer" aria-live="polite"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- AUSBILDER (Login erforderlich) -->
+    <section id="panel-ausbilder" class="panel hidden" aria-labelledby="ausbilder-heading">
+      <h2 id="ausbilder-heading">Ausbilder Bereich</h2>
+
+      <div id="ausbilder-login" class="card login-card" aria-live="polite">
+        <h3>Login</h3>
+        <label>Benutzer
+          <input id="ausbilder-user" type="text" autocomplete="username" />
+        </label>
+        <label>Passwort
+          <input id="ausbilder-pass" type="password" autocomplete="current-password" />
+        </label>
+        <div class="login-actions">
+          <button id="ausbilder-login-btn" class="btn primary">Anmelden</button>
+        </div>
+        <div id="ausbilder-login-msg" class="login-msg" role="status"></div>
+      </div>
+
+      <div id="ausbilder-panel" class="card hidden" aria-hidden="true">
+        <h3>Termine verwalten</h3>
+        <form id="event-form" class="form-inline" aria-label="Termin anlegen">
+          <input id="event-title" placeholder="Titel" required />
+          <input id="event-date" type="datetime-local" required />
+          <input id="event-location" placeholder="Ort" />
+          <button class="btn" type="submit">Termin anlegen</button>
+        </form>
+
+        <h4>Bestehende Termine</h4>
+        <ul id="events-admin-list" class="events-list" aria-live="polite"></ul>
+
+        <h3>Module / Links verwalten</h3>
+        <form id="link-form" class="form-inline" aria-label="Link verwalten">
+          <select id="link-module" aria-label="Modul auswählen">
+            <option value="modul1">Modul 1 (Grundwissen)</option>
+            <option value="modul2">Modul 2 (Täglicher Dienst)</option>
+            <option value="modul3">Modul 3 (Rechtslehre)</option>
+            <option value="pruefungsform">Prüfungsform</option>
+          </select>
+          <input id="link-url" placeholder="https://..." required />
+          <button class="btn" type="submit">Speichern</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- PRÜFUNGSKOMMISSION (Login erforderlich) -->
+    <section id="panel-kommission" class="panel hidden" aria-labelledby="kommission-heading">
+      <h2 id="kommission-heading">Prüfungskommission</h2>
+
+      <div id="kommission-login" class="card login-card" aria-live="polite">
+        <h3>Login</h3>
+        <label>Benutzer
+          <input id="kommission-user" type="text" />
+        </label>
+        <label>Passwort
+          <input id="kommission-pass" type="password" />
+        </label>
+        <div class="login-actions">
+          <button id="kommission-login-btn" class="btn primary">Anmelden</button>
+        </div>
+        <div id="kommission-login-msg" class="login-msg" role="status"></div>
+      </div>
+
+      <div id="kommission-panel" class="card hidden" aria-hidden="true">
+        <h3>Prüfungsfreischaltung</h3>
+        <p>Die Kommission kann die Prüfung für <strong>5 Minuten</strong> live für alle Azubis freischalten.</p>
+        <div class="form-inline">
+          <button id="activate-exam" class="btn danger">Prüfung jetzt freischalten (5 Min)</button>
+          <button id="deactivate-exam" class="btn" disabled>Freischaltung beenden</button>
+        </div>
+        <div id="exam-log" class="log" aria-live="polite"></div>
+
+        <h3>Termine verwalten</h3>
+        <form id="event-form-kom" class="form-inline" aria-label="Termin anlegen Kommission">
+          <input id="event-title-kom" placeholder="Titel" required />
+          <input id="event-date-kom" type="datetime-local" required />
+          <input id="event-location-kom" placeholder="Ort" />
+          <button class="btn" type="submit">Termin anlegen</button>
+        </form>
+
+        <h4>Bestehende Termine</h4>
+        <ul id="events-admin-list-kom" class="events-list" aria-live="polite"></ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer" role="contentinfo">
+    <small>© Landespolizei Falkenheim — Ausbildungsportal</small>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
