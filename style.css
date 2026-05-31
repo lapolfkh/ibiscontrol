@@ -1,0 +1,109 @@
+:root{
+  --bg:#f4f7fb;
+  --card:#ffffff;
+  --accent:#0b4d8c; /* police blue */
+  --accent-2:#0f6fb2;
+  --muted:#6b7280;
+  --danger:#c0392b;
+  --success:#1e7e34;
+  --glass: rgba(255,255,255,0.85);
+  --radius:10px;
+  --shadow: 0 6px 18px rgba(11,77,140,0.08);
+  font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  color:#0b1b2b;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  line-height:1.45;
+
+  /* Hintergrundbild (Pol_Hintergrund.jpg) — Datei im selben Verzeichnis */
+  background:
+    linear-gradient(180deg, rgba(10,34,60,0.55) 0%, rgba(10,34,60,0.45) 100%),
+    url('Pol_Hintergrund.jpg') center/cover no-repeat;
+  background-attachment: fixed;
+}
+
+/* Fallback für Fälle, in denen das Bild nicht geladen wird */
+@media (prefers-reduced-motion: reduce) {
+  body { background-attachment: scroll; }
+}
+
+.topbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:18px 28px;
+  background:linear-gradient(90deg,var(--accent),var(--accent-2));
+  color:#fff;
+  box-shadow: 0 6px 18px rgba(11,77,140,0.18);
+  position:sticky;
+  top:0;
+  z-index:10;
+}
+
+.brand{display:flex;gap:14px;align-items:center}
+.brand img{width:56px;height:56px;border-radius:8px;background:#fff;object-fit:contain;padding:6px}
+.brand h1{margin:0;font-size:18px;letter-spacing:0.4px}
+.subtitle{margin:0;font-size:12px;opacity:0.95}
+
+.nav{display:flex;gap:8px}
+.nav-btn{
+  background:transparent;border:1px solid rgba(255,255,255,0.18);
+  color:#fff;padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:600;
+}
+.nav-btn.active{background:rgba(255,255,255,0.12);box-shadow:inset 0 -2px 0 rgba(0,0,0,0.06)}
+
+.container{max-width:1100px;margin:28px auto;padding:0 18px}
+.panel{display:block}
+.card{
+  background:linear-gradient(180deg, rgba(255,255,255,0.98), rgba(250,252,255,0.95));
+  border-radius:var(--radius);
+  padding:18px;
+  margin-bottom:18px;
+  box-shadow:var(--shadow);
+  border-left:6px solid var(--accent);
+}
+
+.hidden{display:none}
+.login-card label{display:block;margin:8px 0}
+.login-card input{width:100%;padding:8px;border-radius:8px;border:1px solid #e6eef8}
+.login-actions{margin-top:10px}
+.login-msg{margin-top:8px;color:var(--danger)}
+
+.form-inline{display:flex;gap:8px;flex-wrap:wrap}
+.form-inline input,.form-inline select{padding:8px;border-radius:8px;border:1px solid #e6eef8}
+.form-inline button{padding:8px 12px;border-radius:8px;border:none;background:var(--accent);color:#fff;cursor:pointer}
+.form-inline button.btn{background:var(--accent)}
+
+.events-list{list-style:none;padding:0;margin:0}
+.events-list li{padding:10px;border-radius:8px;border:1px solid rgba(15,111,178,0.06);margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;background:linear-gradient(180deg,#fff,#fbfdff)}
+.events-list li .meta{font-size:13px;color:var(--muted)}
+
+.links-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px}
+.links-list li{display:flex;justify-content:space-between;align-items:center;padding:10px;border-radius:8px;border:1px solid rgba(15,111,178,0.06);background:linear-gradient(180deg,#fff,#fbfdff)}
+.links-list a{color:var(--accent-2);text-decoration:none;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:60%}
+
+.btn{padding:8px 12px;border-radius:8px;border:none;background:#e6eef8;color:var(--accent);cursor:pointer}
+.btn.primary{background:var(--accent);color:#fff}
+.btn.danger{background:var(--danger);color:#fff}
+
+.exam-card .exam-status{font-weight:700;padding:10px;border-radius:8px;background:#f1f7ff;border:1px solid #dbeeff}
+.exam-controls{margin-top:10px}
+.timer{font-weight:700;color:var(--danger);margin-top:8px}
+
+.log{margin-top:10px;padding:10px;border-radius:8px;background:#fbfbfb;border:1px solid #eee;font-size:13px;color:var(--muted)}
+
+.footer{max-width:1100px;margin:18px auto;padding:8px 18px;color:var(--muted);font-size:13px}
+
+/* Responsive */
+@media (max-width:800px){
+  .brand h1{font-size:16px}
+  .nav{gap:6px}
+  .form-inline{flex-direction:column}
+  .links-list a{max-width:100%}
+}
